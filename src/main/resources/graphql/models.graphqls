@@ -6,6 +6,11 @@ type SuperCharacter {
 
 type Query {
     characters: [SuperCharacter]!
+    characterById(id:String): SuperCharacter
+}
+
+type Mutation {
+    addCharacter(name:String age:Int): SuperCharacter
 }
 
 

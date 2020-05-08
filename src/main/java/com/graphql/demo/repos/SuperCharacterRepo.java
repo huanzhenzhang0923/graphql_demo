@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -35,5 +36,30 @@ public class SuperCharacterRepo {
 
     public List<SuperCharacter> getCharacters(){
         return this.theCharacters;
+    }
+
+    public SuperCharacter getCharacterById(String id) {
+        List<SuperCharacter> matched = this.theCharacters.stream()
+                .filter(c->c.getId().equalsIgnoreCase(id))
+                .collect(Collectors.toList());
+
+        if (matched.size()>0) {
+            return matched.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public SuperCharacter addCharacter(String name,Integer age) {
+        SuperCharacter newChar = SuperCharacter.builder()
+                .id("Char"+(this.theCharacters.size()+1))
+                .name(name)
+                .age(age)
+                .build();
+
+        log.info("====> Mutation.addCharacter(" +name+ ")");
+        this.theCharacters.add(newChar);
+        return newChar;
     }
 }
