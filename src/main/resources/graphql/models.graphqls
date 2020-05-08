@@ -1,0 +1,12 @@
+type SuperCharacter {
+    id : String!
+    name : String!
+    age: Int
+}
+
+type Query {
+    characters: [SuperCharacter]!
+}
+
+
+
