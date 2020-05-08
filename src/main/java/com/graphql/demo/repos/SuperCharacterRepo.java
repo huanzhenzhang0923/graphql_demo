@@ -1,6 +1,7 @@
 package com.graphql.demo.repos;
 
 import com.graphql.demo.models.SuperCharacter;
+import com.graphql.demo.models.SuperGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,12 @@ import java.util.stream.Collectors;
 public class SuperCharacterRepo {
     private List<SuperCharacter> theCharacters = new ArrayList<SuperCharacter>();
 
-    public SuperCharacterRepo(){seedCharacters();}
+    private SuperGroupRepo groupRepo;
+
+    public SuperCharacterRepo(SuperGroupRepo groupRepo){
+        this.groupRepo=groupRepo;
+        seedCharacters();
+    }
 
     private void seedCharacters(){
         SuperCharacter c1=SuperCharacter.builder()
@@ -51,15 +57,22 @@ public class SuperCharacterRepo {
         }
     }
 
-    public SuperCharacter addCharacter(String name,Integer age) {
+    public SuperCharacter addCharacter(String name,Integer age,String groupName) {
+        SuperGroup sGroup=null;
+        if (groupName!=null && groupName.length()>0) {
+            sGroup = groupRepo.getGroupByName(groupName);
+        }
         SuperCharacter newChar = SuperCharacter.builder()
                 .id("Char"+(this.theCharacters.size()+1))
                 .name(name)
                 .age(age)
+                .group(sGroup)
                 .build();
 
         log.info("====> Mutation.addCharacter(" +name+ ")");
         this.theCharacters.add(newChar);
+
+        if (sGroup!=null) sGroup.addCharacter(newChar);
         return newChar;
     }
 }

@@ -19,8 +19,8 @@ public class Mutation implements GraphQLMutationResolver {
         this.groupRepo=groupRepo;
     }
 
-    public SuperCharacter addCharacter(String name, Integer age) {
-        return characterRepo.addCharacter(name, age);
+    public SuperCharacter addCharacter(String name, Integer age,String groupName) {
+        return characterRepo.addCharacter(name, age,groupName);
     }
 
     public SuperGroup addGroup(String name, Orientation orientation) {
